@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import testRoute from "./routes/user.route";
 import authRoute from "./routes/auth.route";
 
@@ -9,6 +10,7 @@ dotenv.config();
 const app = express();
 const port = 3000;
 
+app.use(cors())
 app.use(express.json());
 
 mongoose
