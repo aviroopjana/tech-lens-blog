@@ -1,4 +1,4 @@
-import { Button, TextInput } from "flowbite-react";
+import { Button, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { IoPlaySharp } from "react-icons/io5";
 import { SiGooglelens } from "react-icons/si";
@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 
 export default function SignUp() {
   const [formData, setFormData] = useState<{ [key: string]: string }>({});
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
@@ -14,6 +16,7 @@ export default function SignUp() {
     e.preventDefault();
     console.log("Submitting form data");
     try {
+      setLoading(true);
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
@@ -23,6 +26,7 @@ export default function SignUp() {
       });
       const data = await res.json();
       console.log(data);
+      setLoading(false);
     } catch (err) {
       console.error(err);
     }
@@ -67,10 +71,7 @@ export default function SignUp() {
             </h2>
           </p>
 
-          <form
-            className="mt-4 flex flex-col gap-3"
-            onSubmit={handleSubmit}
-          >
+          <form className="mt-4 flex flex-col gap-3" onSubmit={handleSubmit}>
             <div>
               <label>Your username</label>
               <TextInput
@@ -103,11 +104,18 @@ export default function SignUp() {
 
             <div>
               <Button
-                gradientDuoTone="purpleToBlue"
+                gradientDuoTone="purpleToPink"
                 type="submit"
-                className="w-full hover:scale-100"
+                disabled={loading}
               >
-                Sign Up
+                {loading ? (
+                  <>
+                    <Spinner size="sm" />
+                    <span className="pl-3">Loading...</span>
+                  </>
+                ) : (
+                  "Sign Up"
+                )}
               </Button>
             </div>
 
