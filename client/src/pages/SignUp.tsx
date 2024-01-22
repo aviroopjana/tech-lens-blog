@@ -1,15 +1,39 @@
 import { Button, TextInput } from "flowbite-react"
+import { useState } from "react"
 import { IoPlaySharp } from "react-icons/io5"
 import { SiGooglelens } from "react-icons/si"
 import { Link } from "react-router-dom"
 
-const SignUp = () => {
+export default function SignUp() {
+
+  const [formData, setFormData] = useState<{ [key: string]: string }>({});
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({...formData, [e.target.id] : e.target.value.trim() });
+  }
+
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });  
+      const data = await res.json();
+      console.log(data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
     <div className="min-h-screen mt-14">
       <div className="flex p-3 max-w-4xl mx-auto flex-col md:flex-row gap-20">
         {/* Left */}
         <div className="flex-1 bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 rounded-lg">
-          <div className="h-4/6 w-8/12 mx-16 my-16 bg-gray-50 rounded-md bg-clip-padding backdrop-blur-lg bg-opacity-30 border border-gray-100 flex flex-col justify-center items-start">
+          <div className="h-4/6 w-8/12 mx-16 my-16 bg-gray-50 rounded-md bg-clip-padding backdrop-blur-lg bg-opacity-30 border border-gray-100 flex flex-col justify-center items-start ">
               <div className="ml-10">
                 <div className="flex flex-row gap-1">
                 <IoPlaySharp className="mt-2" color="white" size={24}/>
@@ -36,7 +60,8 @@ const SignUp = () => {
             <h2 className="text-2xl font-semibold">Step into the future with Tech Lens! </h2>
             <h2 className="text-sm text-zinc-700 font-medium">Sign up now for an unparalleled tech experience.</h2>
           </p>
-          <form className="mt-4">
+
+          <form className="mt-4" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-3">
               <div>
                 <label>Your username</label>
@@ -44,24 +69,27 @@ const SignUp = () => {
                   type="text"
                   placeholder="Username"
                   id="username"
+                  onChange={handleChange}
                 />
               </div>
               
               <div>
                 <label>Your email</label>
                 <TextInput
-                  type="text"
+                  type="email"
                   placeholder="name@company.com"
                   id="email"
+                  onChange={handleChange}
                 />
               </div>     
 
               <div>
                 <label>Your password</label>
                 <TextInput
-                  type="text"
+                  type="password"
                   placeholder="Password"
                   id="password"
+                  onChange={handleChange}
                 />
               </div>
 
@@ -86,4 +114,3 @@ const SignUp = () => {
   )
 }
 
-export default SignUp;
