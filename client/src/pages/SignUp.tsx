@@ -3,6 +3,7 @@ import { useState } from "react";
 import { IoPlaySharp } from "react-icons/io5";
 import { SiGooglelens } from "react-icons/si";
 import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 
 export default function SignUp() {
   const [formData, setFormData] = useState<{ [key: string]: string }>({});
@@ -50,7 +51,7 @@ export default function SignUp() {
     <div className="min-h-screen mt-14">
       <div className="flex p-3 max-w-4xl mx-auto flex-col md:flex-row gap-20">
         {/* Left */}
-        <div className="flex-1 bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 rounded-lg">
+        <div className="hidden sm:inline flex-1 bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 rounded-lg">
           <div className="h-4/6 w-8/12 mx-16 my-16 bg-gray-50 rounded-md bg-clip-padding backdrop-blur-lg bg-opacity-30 border border-gray-100 flex flex-col justify-center items-start ">
             <div className="ml-10">
               <div className="flex flex-row gap-1">
@@ -121,6 +122,7 @@ export default function SignUp() {
                 gradientDuoTone="purpleToPink"
                 type="submit"
                 disabled={loading}
+                className="w-full mt-4"
               >
                 {loading ? (
                   <>
@@ -128,12 +130,20 @@ export default function SignUp() {
                     <span className="pl-3">Loading...</span>
                   </>
                 ) : (
-                  "Sign Up"
+                  <span className="text-[15px]">Sign Up</span>
                 )}
               </Button>
             </div>
 
-            <div className="flex flex-row gap-2 mt-4">
+            <div className="flex items-center">
+              <hr className="flex-1 border-t border-gray-300"/>
+              <span className="mx-4 text-gray-500">OR</span>
+              <hr className="flex-1 border-t border-gray-300"/>
+            </div>
+
+            <OAuth/>
+
+            <div className="flex flex-row gap-2">
               <p className="text-gray-500 font-medium">
                 Already have an account?
               </p>
