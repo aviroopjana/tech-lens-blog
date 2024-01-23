@@ -3,9 +3,12 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import Logo from "./Logo";
+import { useDispatch } from "react-redux";
+import { toggleTheme } from "../redux/theme/themeSlice";
 
 const Header = () => {
   const path = useLocation().pathname;
+  const dispath = useDispatch();
 
   const navLinks = [
     { path: "/", label: "Home" },
@@ -34,6 +37,7 @@ const Header = () => {
           className="w-8 md:w-12 h-8 md:h-10 sm:inline hidden "
           color="gray"
           pill
+          onClick={() => dispath(toggleTheme())}
         >
           <FaMoon />
         </Button>
