@@ -1,12 +1,15 @@
-import { Button, Spinner, TextInput } from "flowbite-react";
+import { Alert, Button, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { IoPlaySharp } from "react-icons/io5";
 import { SiGooglelens } from "react-icons/si";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   const [formData, setFormData] = useState<{ [key: string]: string }>({});
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -14,9 +17,15 @@ export default function SignUp() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!formData.username || !formData.email || !formData.password) {
+      setErrorMessage("All the fields are required");
+      return;
+    }
     console.log("Submitting form data");
     try {
       setLoading(true);
+      setErrorMessage("");
+
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
@@ -25,7 +34,12 @@ export default function SignUp() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log(data);
+      if (!res.ok) {
+        setErrorMessage(data.message);
+      } else {
+        setLoading(false);
+        navigate('/sign-in');
+      }
       setLoading(false);
     } catch (err) {
       console.error(err);
@@ -76,7 +90,7 @@ export default function SignUp() {
               <label>Your username</label>
               <TextInput
                 type="text"
-                placeholder="Username"
+                placeholder="username"
                 id="username"
                 onChange={handleChange}
               />
@@ -96,7 +110,7 @@ export default function SignUp() {
               <label>Your password</label>
               <TextInput
                 type="password"
-                placeholder="Password"
+                placeholder="********"
                 id="password"
                 onChange={handleChange}
               />
@@ -127,6 +141,11 @@ export default function SignUp() {
                 Sign In
               </Link>
             </div>
+            {errorMessage && (
+            <Alert className='mt-5' color='failure'>
+              {errorMessage}
+            </Alert>
+          )}
           </form>
         </div>
       </div>
