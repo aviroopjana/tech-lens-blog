@@ -2,24 +2,21 @@ import { Alert, Button, Spinner, TextInput } from "flowbite-react";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { IoPlaySharp } from "react-icons/io5";
 import { SiGooglelens } from "react-icons/si";
+import { useDispatch, useSelector } from "react-redux";
+import { signInStart, signInFailure, signInSuccess, ApiResponse } from "../redux/user/userSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { RootState } from "../redux/store";
 
 interface FormData {
   email: string;
   password: string;
 }
 
-interface ApiResponse {
-  success: boolean;
-  message: string;
-}
-
 export default function SignIn() {
   const [formData, setFormData] = useState<FormData>({ email: "", password: "" });
-  const [errorMessage, setErrorMessage] = useState<string>("");
-  const [loading, setLoading] = useState(false);
-
+  const { loading, error: errorMessage } = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -28,14 +25,12 @@ export default function SignIn() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      setErrorMessage("All the fields are required");
+      dispatch(signInFailure("All the fields are required"));
       return;
     }
 
     try {
-      setLoading(true);
-      setErrorMessage("");
-
+      dispatch(signInStart());
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
@@ -46,14 +41,16 @@ export default function SignIn() {
 
       const data: ApiResponse = await res.json();
 
-      if (!res.ok) {
-        setErrorMessage(data.message);
-      } else {
-        setLoading(false);
+      if(data.success === false) {
+        dispatch(signInFailure(data.message));
+      }
+
+      if (res.ok) {
+        dispatch(signInSuccess(data));
         navigate('/');
       }
     } catch (error) {
-      console.error(error);
+      dispatch(signInFailure(error.message));
     }
   };
 
