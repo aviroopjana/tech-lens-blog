@@ -1,4 +1,3 @@
-import { timeStamp } from "console";
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
@@ -17,6 +16,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
+    profilePicture: {
+      type: String,
+      default: 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg',
+    }
   },
   { timestamps: true }
 );

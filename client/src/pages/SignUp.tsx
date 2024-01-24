@@ -81,7 +81,7 @@ export default function SignUp() {
             <h2 className="text-2xl font-semibold">
               Step into the future with Tech Lens!{" "}
             </h2>
-            <h2 className="text-sm text-zinc-700 font-medium">
+            <h2 className="text-sm text-zinc-700 dark:text-gray-400 font-medium">
               Sign up now for an unparalleled tech experience.
             </h2>
           </p>
@@ -144,7 +144,7 @@ export default function SignUp() {
             <OAuth/>
 
             <div className="flex flex-row gap-2">
-              <p className="text-gray-500 font-medium">
+              <p className="text-gray-500 dark:text-gray-300 font-medium">
                 Already have an account?
               </p>
               <Link className="text-blue-600 font-medium" to={"/sign-in"}>
