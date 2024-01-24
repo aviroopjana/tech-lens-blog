@@ -83,7 +83,6 @@ export const googleAuth= async(req, res, next) => {
 
   try {
     const user = await User.findOne({ email });
-    console.log(googlePhotoUrl);
     if (user) {
       const token = await jwt.sign(
         {

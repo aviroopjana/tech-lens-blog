@@ -7,10 +7,20 @@ export interface userState {
     loading: boolean
 }
 
+// export interface ApiResponse {
+//     success: boolean,
+//     message: string
+// }
+
 export interface ApiResponse {
-    success: boolean;
-    message: string;
-}  
+    createdAt: string;
+    email: string;
+    profilePicture: string;
+    updatedAt: string;
+    username: string;
+    __v: number;
+    _id: string;
+}
 
 const initialState: userState = {
     currentUser: null,
