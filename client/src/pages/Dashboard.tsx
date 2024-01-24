@@ -24,7 +24,10 @@ const Dashboard = () => {
         <DashSidebar/>
       </div>
       {/*Dashboard Profile */}
-      {tab === 'profile' && <DashProfile/>}
+      <div className="w-full">
+        {tab === 'profile' && <DashProfile/>}
+      </div>
+      
     </div>
   )
 }
