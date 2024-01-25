@@ -1,9 +1,25 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { Button, TextInput } from "flowbite-react";
+import { ChangeEvent, useRef, useState } from "react";
 
 const DashProfile = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
+
+  const [imageFile, setImageFile] = useState<null | File>(null);
+  const [imageFileURL, setImageFileURL] = useState<string | null>(null);
+
+  const filePickerRef = useRef<HTMLInputElement>(null);
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files![0];
+    if( file) {
+      setImageFile(file);
+      setImageFileURL(URL.createObjectURL(file));
+    }
+    
+  }
+    console.log(imageFileURL, imageFile);
 
   return (
     <div className="max-w-lg mx-auto w-full p-3">
@@ -11,11 +27,14 @@ const DashProfile = () => {
         Personal Information
       </h1>
       <form className="flex flex-col gap-3">
-        <div className="h-32 w-32 self-center cursor-pointer">
+        <input type="file" accept="image/*" onChange={handleImageChange} ref={filePickerRef} hidden/>
+        <div className="relative h-32 w-32 self-center cursor-pointer"
+        onClick={() => filePickerRef.current?.click()}>
           <img
             alt=""
-            src={currentUser?.profilePicture}
-            className="rounded-full w-full h-full border-b border-8 border-[lightgray]"
+            src={imageFileURL || currentUser?.profilePicture }
+            className="rounded-full w-full h-full border-8 object-cover border-[lightgray]"
+            
           />
         </div>
         <div className="flex flex-col gap-1">
