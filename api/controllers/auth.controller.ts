@@ -61,6 +61,7 @@ export const signin = async (req, res, next) => {
     const token = await jwt.sign(
       {
         id: validUser._id,
+        isAdmin: validUser.isAdmin,
       },
       process.env.JWT_SECRET
     );
@@ -78,8 +79,8 @@ export const signin = async (req, res, next) => {
   }
 };
 
-export const googleAuth= async(req, res, next) => {
-  const {name, email, googlePhotoUrl} = req.body;
+export const googleAuth = async (req, res, next) => {
+  const { name, email, googlePhotoUrl } = req.body;
 
   try {
     const user = await User.findOne({ email });
@@ -87,15 +88,19 @@ export const googleAuth= async(req, res, next) => {
       const token = await jwt.sign(
         {
           id: user._id,
+          isAdmin: user.isAdmin,
         },
         process.env.JWT_SECRET
       );
-  
-      const { password: pass, ...rest } = user.toJSON(); 
 
-      res.status(200).cookie("access_token", token, {
-        httpOnly: true
-      }).json(rest);
+      const { password: pass, ...rest } = user.toJSON();
+
+      res
+        .status(200)
+        .cookie("access_token", token, {
+          httpOnly: true,
+        })
+        .json(rest);
     } else {
       const generatedPassword =
         Math.random().toString(36).slice(-8) +
@@ -103,7 +108,7 @@ export const googleAuth= async(req, res, next) => {
       const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
       const newUser = new User({
         username:
-          name.toLowerCase().split(' ').join('') +
+          name.toLowerCase().split(" ").join("") +
           Math.random().toString(9).slice(-4),
         email,
         password: hashedPassword,
@@ -111,19 +116,18 @@ export const googleAuth= async(req, res, next) => {
       });
       await newUser.save();
       const token = jwt.sign(
-        { id: newUser._id },
+        { id: newUser._id, isAdmin: newUser.isAdmin },
         process.env.JWT_SECRET
       );
       const { password, ...rest } = newUser.toJSON();
       res
         .status(200)
-        .cookie('access_token', token, {
+        .cookie("access_token", token, {
           httpOnly: true,
         })
         .json(rest);
     }
-  
   } catch (error) {
     next(error);
   }
-}
+};
