@@ -23,7 +23,7 @@ import {
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 const DashProfile = () => {
-  const { currentUser, error } = useSelector((state: RootState) => state.user);
+  const { currentUser, error, loading } = useSelector((state: RootState) => state.user);
 
   const [imageFile, setImageFile] = useState<null | File>(null);
   const [imageFileURL, setImageFileURL] = useState<string | null>(null);
@@ -249,8 +249,9 @@ const DashProfile = () => {
           gradientDuoTone={"purpleToBlue"}
           outline
           className="mt-2"
+          disabled={loading || imageFileUploadProgress !== null}
         >
-          Save
+          {loading || imageFileUploadProgress !== null ? 'Loading...' : 'Update'}
         </Button>
 
         <div className="flex justify-between mt-2">
