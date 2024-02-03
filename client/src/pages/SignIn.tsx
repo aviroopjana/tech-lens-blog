@@ -42,10 +42,6 @@ export default function SignIn() {
 
       const data: ApiResponse = await res.json();
 
-      if(data.success === false) {
-        dispatch(signInFailure(data.message));
-      }
-
       if (res.ok) {
         dispatch(signInSuccess(data));
         navigate('/');
@@ -84,14 +80,14 @@ export default function SignIn() {
           <div>
             <SiGooglelens className="pr-2" size={40} />
           </div>
-          <p className="mt-4">
+          <div className="mt-4">
             <h2 className="text-2xl font-semibold">
               Welcome back to Tech Lens!{" "}
             </h2>
             <h2 className="text-sm text-zinc-700 dark:text-gray-400 font-medium">
               Sign in below to get started with your account
             </h2>
-          </p>
+          </div>
 
           <form className="mt-4 flex flex-col gap-3" onSubmit={handleSubmit}>
             <div>
@@ -101,6 +97,7 @@ export default function SignIn() {
                 placeholder="name@company.com"
                 id="email"
                 onChange={handleChange}
+                autoComplete="username"
               />
             </div>
 
@@ -111,6 +108,7 @@ export default function SignIn() {
                 placeholder="********"
                 id="password"
                 onChange={handleChange}
+                autoComplete="current-password"
               />
             </div>
 
