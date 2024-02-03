@@ -8,6 +8,7 @@ import Projects from "./pages/Projects";
 import Header from "./components/Header";
 import FooterComponent from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
+import CreatePost from "./pages/CreatePost";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
         </Route>
         <Route path="/about" element={<AboutPage />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/create-post" element={<CreatePost/>} />
       </Routes>
       <FooterComponent />
     </BrowserRouter>

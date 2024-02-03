@@ -21,9 +21,12 @@ import {
   updateSuccess,
 } from "../redux/user/userSlice";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 const DashProfile = () => {
-  const { currentUser, error, loading } = useSelector((state: RootState) => state.user);
+  const { currentUser, error, loading } = useSelector(
+    (state: RootState) => state.user
+  );
 
   const [imageFile, setImageFile] = useState<null | File>(null);
   const [imageFileURL, setImageFileURL] = useState<string | null>(null);
@@ -124,12 +127,12 @@ const DashProfile = () => {
     }
   };
 
-  const handleDeleteUser = async() => {
+  const handleDeleteUser = async () => {
     setShowModal(false);
     try {
       dispatch(deleteUserStart());
       const res = await fetch(`/api/user/delete/${currentUser?._id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
       const data = await res.json();
 
@@ -137,29 +140,29 @@ const DashProfile = () => {
         dispatch(deleteUserFailure(data.message));
       } else {
         dispatch(deleteUserSuccess(data));
-        window.location.href = '/sign-in';
+        window.location.href = "/sign-in";
       }
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
     }
-  }
+  };
 
-  const handleSignout = async() => {
+  const handleSignout = async () => {
     try {
       const res = await fetch(`/api/user/signout`, {
-        method: 'POST',
+        method: "POST",
       });
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
       } else {
         dispatch(signoutSuccess());
-        window.location.href = '/sign-in';
+        window.location.href = "/sign-in";
       }
     } catch (error) {
       console.log(error.message);
     }
-  }
+  };
 
   return (
     <div className="max-w-lg mx-auto w-full p-3">
@@ -209,7 +212,6 @@ const DashProfile = () => {
             }`}
           />
         </div>
-
         {imageFileUploadError && (
           <Alert color={"failure"}>{imageFileUploadError}</Alert>
         )}
@@ -243,7 +245,6 @@ const DashProfile = () => {
             onChange={handleChange}
           />
         </div>
-
         <Button
           type="submit"
           gradientDuoTone={"purpleToBlue"}
@@ -251,8 +252,17 @@ const DashProfile = () => {
           className="mt-2"
           disabled={loading || imageFileUploadProgress !== null}
         >
-          {loading || imageFileUploadProgress !== null ? 'Loading...' : 'Update'}
+          {loading || imageFileUploadProgress !== null
+            ? "Loading..."
+            : "Update"}
         </Button>
+        {currentUser?.isAdmin && (
+          <Link to={"/create-post"}>
+            <Button gradientDuoTone={"purpleToBlue"} outline className="mt-2 w-full">
+              Create Post
+            </Button>
+          </Link>
+        )}
 
         <div className="flex justify-between mt-2">
           <span
@@ -261,13 +271,13 @@ const DashProfile = () => {
           >
             Delete Account
           </span>
-          <span className="text-red-600 font-semibold cursor-pointer" 
+          <span
+            className="text-red-600 font-semibold cursor-pointer"
             onClick={handleSignout}
           >
             Sign Out
           </span>
         </div>
-
         {updateUserSuccess && (
           <Alert color={"success"} className="mt-5">
             {updateUserSuccess}
@@ -283,9 +293,13 @@ const DashProfile = () => {
             {error}
           </Alert>
         )}
-
         {showModal && (
-          <Modal show={showModal} onClose={() => setShowModal(false)} size={'md'} popup>
+          <Modal
+            show={showModal}
+            onClose={() => setShowModal(false)}
+            size={"md"}
+            popup
+          >
             <Modal.Header />
             <Modal.Body>
               <div className="text-center">

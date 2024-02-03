@@ -15,6 +15,7 @@ export interface ApiResponse {
   username: string;
   __v: number;
   _id: string;
+  isAdmin: boolean;
 }
 
 const initialState: userState = {
