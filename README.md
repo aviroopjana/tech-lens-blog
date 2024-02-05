@@ -2,6 +2,71 @@
 
 Tech Lens is a dynamic full stack MERN (MongoDB, Express, React, Node.js) blog application currently under development. It aims to provide a seamless and immersive experience for tech enthusiasts to share and explore the latest trends and insights in the world of technology.
 
+## Project Structure 📁
+
+```
+└── 📁tech-lens-blog
+    └── 📁api
+        └── 📁controllers
+            └── auth.controller.ts
+            └── user.controller.ts
+        └── index.ts
+        └── 📁models
+            └── user.model.ts
+        └── 📁routes
+            └── auth.route.ts
+            └── user.route.ts
+        └── 📁utils
+            └── error.ts
+            └── verifyUser.ts
+    └── 📁client
+        └── .eslintrc.cjs
+        └── index.html
+        └── package-lock.json
+        └── package.json
+        └── postcss.config.js
+        └── 📁public
+        └── README.md
+        └── 📁src
+            └── App.tsx
+            └── 📁assets
+            └── 📁components
+                └── DashProfile.tsx
+                └── DashSidebar.tsx
+                └── Footer.tsx
+                └── Header.tsx
+                └── Logo.tsx
+                └── OAuth.tsx
+                └── PrivateRoute.tsx
+                └── ThemeProvider.tsx
+            └── firebase.ts
+            └── index.css
+            └── main.tsx
+            └── 📁pages
+                └── About.tsx
+                └── CreatePost.tsx
+                └── Dashboard.tsx
+                └── Home.tsx
+                └── Projects.tsx
+                └── SignIn.tsx
+                └── SignUp.tsx
+            └── 📁redux
+                └── store.ts
+                └── 📁theme
+                    └── themeSlice.ts
+                └── 📁user
+                    └── userSlice.ts
+            └── vite-env.d.ts
+        └── tailwind.config.js
+        └── tsconfig.json
+        └── tsconfig.node.json
+        └── vite.config.ts
+    └── package-lock.json
+    └── package.json
+    └── README.md
+    └── tsconfig.json
+```
+
 ## Major Tech Stack 🛠️
 
 - **Frontend**:
@@ -30,9 +95,47 @@ Tech Lens is a dynamic full stack MERN (MongoDB, Express, React, Node.js) blog a
 
 ## Getting Started 🚀
 
-1. Clone the repository: `git clone https://github.com/aviroopjana/tech-lens-blog.git`
-2. Navigate to the project directory: `cd tech-lens-blog`
-3. Install dependencies: `npm install`
-4. Start the development server: `npm run dev`
+1. **Clone the repository:**
 
-Feel free to contribute, report issues, or suggest new features. Happy coding! 🎉
+    ```bash
+    git clone https://github.com/your-username/mern-blog.git
+    ```
+
+    Navigate to the project directory:
+
+    ```bash
+    cd mern-blog
+    ```
+
+    Install dependencies for the server and client:
+
+    ```bash
+    npm install
+    ```
+
+## Start the Backend Server 🌐
+
+To run the api server, execute the following command in the root of the project:
+
+```bash
+npm run dev
+```
+This command will start the server using nodemon, enabling automatic restarts on file changes.
+
+## Start the Client ⚛️
+Navigate to the client directory:
+
+```bash
+cd client
+```
+Install client dependencies:
+
+```bash
+npm install
+```
+Then, start the client server:
+
+```bash
+npm run dev
+````
+Explore, contribute, and enhance the MERN Blog project! 🎉
