@@ -104,7 +104,7 @@ Tech Lens is a dynamic full stack MERN (MongoDB, Express, React, Node.js) blog a
     Navigate to the project directory:
 
     ```bash
-    cd mern-blog
+    cd tech-lens-blog
     ```
 
     Install dependencies for the server and client:
