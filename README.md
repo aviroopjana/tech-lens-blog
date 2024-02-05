@@ -98,7 +98,7 @@ Tech Lens is a dynamic full stack MERN (MongoDB, Express, React, Node.js) blog a
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/your-username/mern-blog.git
+    git clone https://github.com/aviroopjana/tech-lens-blog.git
     ```
 
     Navigate to the project directory:
