@@ -1,10 +1,71 @@
-import { Button, FileInput, Label, Select, TextInput } from "flowbite-react";
+import {
+  StorageError,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import {
+  Alert,
+  Button,
+  FileInput,
+  Label,
+  Select,
+  TextInput,
+} from "flowbite-react";
 import JoditEditor from "jodit-react";
 import { useRef, useState } from "react";
+import { app } from "../firebase";
+import { CircularProgressbar } from "react-circular-progressbar";
 
 const CreatePost = () => {
   const editor = useRef(null);
   const [content, setContent] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [imageUploadProgress, setImageUploadProgress] = useState<number | null>(
+    null
+  );
+  const [imageUploadError, setImageUploadError] = useState<string | null>(null);
+  const [formData, setFormData] = useState<{ image?: string }>({});
+
+  const handleUploadImage = async () => {
+    try {
+      if (!file) {
+        setImageUploadError("Please select an image first");
+        return;
+      }
+      setImageUploadError(null);
+      const storage = getStorage(app);
+      const fileName = new Date().getTime() + "-" + file.name;
+      const storageRef = ref(storage, fileName);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setImageUploadProgress(Number(progress.toFixed(0)));
+        },
+        (error: StorageError) => {
+          const errorMessage =
+            error.message || "An error occurred during image upload";
+          setImageUploadError(errorMessage);
+          setImageUploadProgress(null);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+            setImageUploadError(null);
+            setImageUploadProgress(null);
+            setFormData({ ...formData, image: downloadUrl });
+          });
+        }
+      );
+    } catch (error) {
+      setImageUploadError("Image upload failed");
+      setImageUploadProgress(null);
+    }
+  };
 
   return (
     <div className="max-w-3xl p-3 min-h-screen mx-auto">
@@ -43,12 +104,43 @@ const CreatePost = () => {
           <div className="flex flex-col gap-2">
             <Label value="Upload a suitable image" className="text-lg" />
             <div className="flex gap-4 items-center justify-between border-4 border-teal-400 border-dotted p-3">
-              <FileInput typeof="file" accept="image/*" />
-              <Button gradientDuoTone={"purpleToBlue"} outline>
+              <FileInput
+                typeof="file"
+                accept="image/*"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files.length > 0) {
+                    setFile(e.target.files[0]);
+                  }
+                }}
+              />
+              <Button
+                gradientDuoTone={"purpleToBlue"}
+                outline
+                onClick={handleUploadImage}
+              >
                 {" "}
-                Upload Image
+                {imageUploadProgress ? (
+                  <div className="h-16 w-16">
+                    <CircularProgressbar
+                      value={imageUploadProgress}
+                      text={`${imageUploadProgress || 0}%`}
+                    />
+                  </div>
+                ) : (
+                  "Upload Image"
+                )}
               </Button>
             </div>
+            {imageUploadError && (
+              <Alert color={"failure"}>{imageUploadError}</Alert>
+            )}
+            {formData.image && (
+              <img
+                src={formData.image}
+                alt="upload"
+                className="w-full h-72 object-contain"
+              />
+            )}
           </div>
           {/* <ReactQuill
             theme="snow"
@@ -56,15 +148,15 @@ const CreatePost = () => {
             className="h-72 mb-12"
           /> */}
           <div className="flex flex-col gap-2 mb-12">
-            <Label value="Blog content" className="text-lg"/>
+            <Label value="Blog content" className="text-lg" />
             <JoditEditor
-            ref={editor}
-            value={content}
-            config={{theme: 'dark'}}
-            //tabIndex={1} // tabIndex of textarea
-            onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-            //onChange={newContent => {}}
-          />
+              ref={editor}
+              value={content}
+              config={{ theme: "dark" }}
+              //tabIndex={1} // tabIndex of textarea
+              onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+              //onChange={newContent => {}}
+            />
           </div>
           <Button
             className="mt-2"
