@@ -1,8 +1,11 @@
 import { Button, FileInput, Label, Select, TextInput } from "flowbite-react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import JoditEditor from "jodit-react";
+import { useRef, useState } from "react";
 
 const CreatePost = () => {
+  const editor = useRef(null);
+  const [content, setContent] = useState("");
+
   return (
     <div className="max-w-3xl p-3 min-h-screen mx-auto">
       <div className="flex flex-col">
@@ -47,11 +50,22 @@ const CreatePost = () => {
               </Button>
             </div>
           </div>
-          <ReactQuill
+          {/* <ReactQuill
             theme="snow"
             placeholder=" Write your blog here..."
             className="h-72 mb-12"
+          /> */}
+          <div className="flex flex-col gap-2 mb-12">
+            <Label value="Blog content" className="text-lg"/>
+            <JoditEditor
+            ref={editor}
+            value={content}
+            config={{theme: 'dark'}}
+            //tabIndex={1} // tabIndex of textarea
+            onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+            //onChange={newContent => {}}
           />
+          </div>
           <Button
             className="mt-2"
             gradientDuoTone={"purpleToBlue"}
