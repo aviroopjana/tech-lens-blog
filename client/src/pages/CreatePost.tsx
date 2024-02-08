@@ -17,16 +17,27 @@ import JoditEditor from "jodit-react";
 import { useRef, useState } from "react";
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
+import { useNavigate } from "react-router-dom";
+
+interface formDataState {
+  title?: string;
+  image?: string;
+  category?: string;
+  content?: string;
+}
 
 const CreatePost = () => {
   const editor = useRef(null);
-  const [content, setContent] = useState("");
+  // const [content, setContent] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
   const [imageUploadProgress, setImageUploadProgress] = useState<number | null>(
     null
   );
   const [imageUploadError, setImageUploadError] = useState<string | null>(null);
-  const [formData, setFormData] = useState<{ image?: string }>({});
+  const [formData, setFormData] = useState<formDataState>({});
+  const [publishError, setPublishError] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   const handleUploadImage = async () => {
     try {
@@ -67,6 +78,33 @@ const CreatePost = () => {
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("api/post/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      console.log(data);
+      
+      if (!res.ok) {
+        setPublishError(data.message);
+        return;
+      }
+      if (res.ok) {
+        setPublishError(null);
+        navigate(`/post/${data.savedPost.slug}`);
+      }
+    } catch (error) {
+      setPublishError("Something went wrong");
+    }
+  };
+
   return (
     <div className="max-w-3xl p-3 min-h-screen mx-auto">
       <div className="flex flex-col">
@@ -77,11 +115,18 @@ const CreatePost = () => {
           Note: All content that you add in your blog post must be original
           content. All acknowledgements of source references must be ensured
         </h1>
-        <form className="flex flex-col mt-5 gap-4">
+        <form className="flex flex-col mt-5 gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex flex-col gap-2 flex-1">
               <Label htmlFor="title" value="Blog title" className="text-lg" />
-              <TextInput id="title" placeholder="Title" required />
+              <TextInput
+                id="title"
+                placeholder="Title"
+                required
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
+              />
             </div>
             <div className="flex flex-col gap-2">
               <Label
@@ -89,7 +134,12 @@ const CreatePost = () => {
                 value="Choose a topic"
                 className="text-lg"
               />
-              <Select id="category">
+              <Select
+                id="category"
+                onChange={(e) =>
+                  setFormData({ ...formData, category: e.target.value })
+                }
+              >
                 <option value={"Uncategorized"}>Select a category</option>
                 <option value={"FullStack"}>FullStack</option>
                 <option value={"Devops"}>Devops</option>
@@ -149,13 +199,20 @@ const CreatePost = () => {
           /> */}
           <div className="flex flex-col gap-2 mb-12">
             <Label value="Blog content" className="text-lg" />
-            <JoditEditor
+            {/* <JoditEditor
               ref={editor}
               value={content}
               config={{ theme: "dark" }}
-              //tabIndex={1} // tabIndex of textarea
               onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-              //onChange={newContent => {}}
+              onChange={(content) => setFormData({ ...formData, content: content })}
+            /> */}
+            <JoditEditor
+              ref={editor}
+              value={formData.content || ""}
+              config={{ theme: "dark" }}
+              onBlur={(newContent) =>
+                setFormData({ ...formData, content: newContent })
+              }
             />
           </div>
           <Button
@@ -166,6 +223,11 @@ const CreatePost = () => {
           >
             Submit
           </Button>
+          {publishError && (
+            <Alert className="mt-5" color={"failure"}>
+              {publishError}
+            </Alert>
+          )}
         </form>
       </div>
     </div>
