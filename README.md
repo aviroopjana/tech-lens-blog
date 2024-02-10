@@ -9,6 +9,7 @@ Tech Lens is a dynamic full stack MERN (MongoDB, Express, React, Node.js) blog a
     └── 📁api
         └── 📁controllers
             └── auth.controller.ts
+            └── post.controller.ts           
             └── user.controller.ts
         └── index.ts
         └── 📁models
