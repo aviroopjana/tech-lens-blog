@@ -24,7 +24,7 @@ import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
 const DashProfile = () => {
-  const { currentUser, error, loading } = useSelector(
+  const { currentUser, error, loading }: RootState['user'] = useSelector(
     (state: RootState) => state.user
   );
 
