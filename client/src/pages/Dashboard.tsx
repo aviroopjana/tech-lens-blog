@@ -20,19 +20,18 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       <div className="md:w-56">
-
         {/*Dashboard Sidebar */}
 
         <DashSidebar />
       </div>
 
-      {/*Dashboard Profile */}
+      <div className="w-full">
+        {/*Dashboard Profile */}
+        {tab === "profile" && <DashProfile />}
 
-      <div className="w-full">{tab === "profile" && <DashProfile />}</div>
-
-      {/*Dashboard Posts*/}
-
-      <div className="w-full">{tab === "posts" && <DashPosts />}</div>     
+        {/*Dashboard Posts*/}
+        {tab === "posts" && <DashPosts />}
+      </div>
     </div>
   );
 };
