@@ -72,7 +72,7 @@ const DashPosts = () => {
     setShowModal(false);
     try {
       const res = await fetch(
-        `/api/post/deletePosts/${currentUser?._id}/${postIdToDelete}`,
+        `/api/post/deleteposts/${currentUser?._id}/${postIdToDelete}`,
         {
           method: "DELETE",
         }
