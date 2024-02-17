@@ -90,19 +90,23 @@ export const deletePosts = async (req, res, next) => {
 };
 
 export const updatePost = async (req, res, next) => {
+
+  console.log('userId:', req.params.userId);
+  console.log('postId:', req.params.postId);
+
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
     return next(ErrorHandler(403, "You are not allowed to edit this post"));
   }
 
   try {
     const updatedPost = await Post.findByIdAndUpdate(
-      req.params.id,
+      req.params.postId, 
       {
         $set: {
-          title: req.user.title,
-          content: req.user.content,
-          category: req.user.category,
-          image: req.user.image,
+          title: req.body.title, 
+          content: req.body.content,
+          category: req.body.category,
+          image: req.body.image,
         },
       },
       { new: true }
@@ -113,3 +117,4 @@ export const updatePost = async (req, res, next) => {
     next(error);
   }
 };
+
