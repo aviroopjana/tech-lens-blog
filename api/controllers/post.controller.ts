@@ -88,3 +88,28 @@ export const deletePosts = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updatePost = async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+    return next(ErrorHandler(403, "You are not allowed to edit this post"));
+  }
+
+  try {
+    const updatedPost = await Post.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: {
+          title: req.user.title,
+          content: req.user.content,
+          category: req.user.category,
+          image: req.user.image,
+        },
+      },
+      { new: true }
+    );
+
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    next(error);
+  }
+};
