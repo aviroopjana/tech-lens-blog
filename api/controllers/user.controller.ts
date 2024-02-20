@@ -96,7 +96,7 @@ export const getAllUsers = async (req, res, next) => {
       .limit(limit);
 
     const usersWithoutPassword = users.map((user) => {
-      const { password, ...rest } = user;
+      const { password, ...rest } = user.toObject();
       return rest;
     })
 
