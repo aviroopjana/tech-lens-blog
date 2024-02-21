@@ -10,6 +10,7 @@ import FooterComponent from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
 import CreatePost from "./pages/CreatePost";
 import UpdatePost from "./pages/UpdatePost";
+import PostPages from "./pages/PostPages";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         <Route path="/projects" element={<Projects />} />
         <Route path="/create-post" element={<CreatePost/>} />
         <Route path="/update-post/:postId" element={<UpdatePost/>} />
+        <Route path="/post/:postSlug" element={<PostPages/>} />
       </Routes>
       <FooterComponent />
     </BrowserRouter>
