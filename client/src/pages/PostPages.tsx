@@ -1,7 +1,8 @@
 import { Button, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import CallToAction from "../components/CalltoAction";
+import CallToAction from "../components/CallToAction";
+import CommentSection from "../components/CommentSection";
 
 interface Post {
   _id: string;
@@ -67,16 +68,22 @@ const PostPages = () => {
           {post && post.category}
         </Button>
       </Link>
-      <img src={post && post.image} className="mt-5 p-3 max-h-[600px] w-full lg:max-w-[550px] self-center object-cover"/>
+      <img
+        src={post && post.image}
+        className="mt-5 p-3 max-h-[600px] w-full lg:max-w-[550px] self-center object-cover"
+      />
       <div className="flex justify-between p-3 border-b border-slate-500 max-w-2xl mx-auto text-xs w-full">
         <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
-        <span>{post && (post.content.length/1000).toFixed(0)} mins read</span>
+        <span>{post && (post.content.length / 1000).toFixed(0)} mins read</span>
       </div>
-      <div dangerouslySetInnerHTML={{__html: post?.content ?? ""}} className="max-w-2xl mx-auto w-full p-3 post-content">
-      </div>
+      <div
+        dangerouslySetInnerHTML={{ __html: post?.content ?? "" }}
+        className="max-w-2xl mx-auto w-full p-3 post-content"
+      ></div>
       <div className="max-w-4xl w-full mx-auto">
-        <CallToAction/>
+        <CallToAction />
       </div>
+      <CommentSection postId={post?._id} />
     </main>
   );
 };
