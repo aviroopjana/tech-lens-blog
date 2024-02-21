@@ -13,15 +13,15 @@ import {
   Select,
   TextInput,
 } from "flowbite-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import JoditEditor from "jodit-react";
 
 interface formDataState {
   title?: string;
@@ -45,6 +45,8 @@ const UpdatePost = () => {
     _id: "",
   });
   const [publishError, setPublishError] = useState<string | null>(null);
+
+  const editor = useRef(null);
 
   const navigate = useNavigate();
 
@@ -232,7 +234,7 @@ const UpdatePost = () => {
               />
             )}
           </div>
-          {/* <JoditEditor
+          <JoditEditor
               ref={editor}
               value={formData.content || ""}
               config={{ theme: "dark" }}
@@ -240,8 +242,8 @@ const UpdatePost = () => {
                 setFormData({ ...formData, content: newContent })
               }
               onChange={(content) => setFormData({ ...formData, content: content })}
-            /> */}
-          <ReactQuill
+            />
+          {/* <ReactQuill
             theme="snow"
             placeholder=" Write your blog here..."
             className="h-72 mb-12"
@@ -249,7 +251,7 @@ const UpdatePost = () => {
             onChange={(content) =>
               setFormData({ ...formData, content: content })
             }
-          />
+          /> */}
           <Button
             className="mt-2"
             gradientDuoTone={"purpleToBlue"}
