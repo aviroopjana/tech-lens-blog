@@ -4,10 +4,32 @@ import { Link } from "react-router-dom";
 import { Button, Textarea } from "flowbite-react";
 import { useState } from "react";
 
-const CommentSection = ({ postId }: { postId?: string }) => {
+const CommentSection = ({ postId }: { postId: string }) => {
   const { currentUser } = useSelector((state: RootState) => state.user);
 
   const [comment, setComment] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('/api/comment/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type' : 'application/json',
+        },
+        body: JSON.stringify({content: comment, postId, userId: currentUser?._id})
+      });
+
+      const data = await res.json();
+      console.log(data);
+      if(res.ok) {
+        setComment('');
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="max-w-3xl p-3 mx-auto w-full">
@@ -32,6 +54,7 @@ const CommentSection = ({ postId }: { postId?: string }) => {
 
       {/* Comment Box */}
       {currentUser && (
+        <form onSubmit={handleSubmit}>
         <div className="p-5 border border-teal-600 rounded-lg">
             <Textarea
                 placeholder="Add a comment here..."
@@ -45,6 +68,7 @@ const CommentSection = ({ postId }: { postId?: string }) => {
                 <Button outline gradientDuoTone={'purpleToPink'} type="submit">Submit</Button>
             </div>
         </div>
+      </form>
       )}
     </div>
   );
