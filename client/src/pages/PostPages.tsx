@@ -83,7 +83,8 @@ const PostPages = () => {
       <div className="max-w-4xl w-full mx-auto">
         <CallToAction />
       </div>
-      <CommentSection postId={post?._id} />
+      {post && <CommentSection postId={post._id} />}
+
     </main>
   );
 };

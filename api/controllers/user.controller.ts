@@ -98,7 +98,7 @@ export const getAllUsers = async (req, res, next) => {
     const usersWithoutPassword = users.map((user) => {
       const { password, ...rest } = user.toObject();
       return rest;
-    })
+    });
 
     const totalUsers = await User.countDocuments();
 
@@ -111,15 +111,30 @@ export const getAllUsers = async (req, res, next) => {
     );
 
     const lastMonthUsers = await User.countDocuments({
-      createdAt: {$gte: oneMonthAgo},
+      createdAt: { $gte: oneMonthAgo },
     });
 
     res.status(200).json({
       users: usersWithoutPassword,
       totalUsers,
-      lastMonthUsers
+      lastMonthUsers,
     });
+  } catch (error) {
+    next(error);
+  }
+};
 
+export const getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.userId);
+
+    if(!user) {
+      return next(ErrorHandler(404, 'User Not Found!'));
+    }
+
+    const { password, ...rest } = user.toObject();
+
+    res.status(200).json(rest);
   } catch (error) {
     next(error);
   }
