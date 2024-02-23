@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Textarea } from "flowbite-react";
 import { useEffect, useState } from "react";
 import Comment from "./Comment";
@@ -10,20 +10,22 @@ interface CommentType {
   content: string;
   userId: string;
   postId: string;
-  likes: Array<number>;
+  likes: Array<string>;
   numberOfLikes: number;
   createdAt: string;
 }
 
 interface CommentSectionProps {
-  postId?: string; 
+  postId?: string;
 }
 
-const CommentSection: React.FC<CommentSectionProps>  = ({ postId }) => {
+const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
   const { currentUser } = useSelector((state: RootState) => state.user);
 
   const [comment, setComment] = useState("");
   const [recievedComments, setRecievedComments] = useState<CommentType[]>([]);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,8 +56,8 @@ const CommentSection: React.FC<CommentSectionProps>  = ({ postId }) => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        if(!postId) {
-          console.log('postId is missing!')
+        if (!postId) {
+          console.log("postId is missing!");
         }
         const res = await fetch(`/api/comment/getPostComments/${postId}`);
         const data = await res.json();
@@ -67,6 +69,38 @@ const CommentSection: React.FC<CommentSectionProps>  = ({ postId }) => {
 
     fetchComments();
   }, [postId]);
+
+  const handleLike = async (commentId: string) => {
+    try {
+      if (!currentUser) {
+        navigate("/sign-in");
+        return;
+      }
+
+      const res = await fetch(`/api/comment/likeComment/${commentId}`, {
+        method: "PUT",
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setRecievedComments(
+          recievedComments.map((existingComment) => {
+            if (existingComment._id === commentId) {
+              return {
+                ...existingComment,
+                likes: data.likes,
+                numberOfLikes: data.numberOfLikes,
+              };
+            }
+            return existingComment;
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="max-w-3xl p-4 mx-auto w-full">
@@ -123,10 +157,12 @@ const CommentSection: React.FC<CommentSectionProps>  = ({ postId }) => {
         <>
           <div className="flex gap-2 my-5 items-center font-semibold">
             {recievedComments.length}
-            <p className="text-base">Comments</p>
+            <p className="text-base">
+              {recievedComments.length === 1 ? "Comment" : "Comments"}
+            </p>
           </div>
           {recievedComments.map((comment) => (
-            <Comment key={comment._id} comment={comment} />
+            <Comment key={comment._id} comment={comment} onLike={handleLike} />
           ))}
         </>
       )}

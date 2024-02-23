@@ -1,13 +1,17 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
+import { FaThumbsUp } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 interface CommentType {
   content: string;
   userId: string;
   postId: string;
-  likes: Array<number>;
+  likes: Array<string>;
   numberOfLikes: number;
   createdAt: string;
+  _id: string;
 }
 
 interface User {
@@ -20,15 +24,21 @@ interface User {
   _id: string;
 }
 
-const Comment = ({ comment }: { comment: CommentType }) => {
+interface CommentProps {
+  comment: CommentType;
+  onLike: (id: string) => void;
+}
+
+const Comment: React.FC<CommentProps> = ({ comment, onLike }) => {
   const [user, setUser] = useState<User>();
+
+  const { currentUser } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     const getUser = async () => {
       try {
         const res = await fetch(`/api/user/${comment.userId}`);
         const data = await res.json();
-        console.log(data);
         if (res.ok) {
           setUser(data);
         }
@@ -57,9 +67,26 @@ const Comment = ({ comment }: { comment: CommentType }) => {
           </span>
         </div>
         <div className="text-sm font-medium">{comment.content}</div>
+        <div className="mt-2 flex gap-2">
+          <button
+            type="button"
+            onClick={() => onLike(comment._id)}
+            className={`text-gray-400 hover:text-blue-500 ${
+              currentUser &&
+              comment.likes.includes(currentUser._id) &&
+              'text-blue-500'
+          }`}
+          
+          >
+            <FaThumbsUp className="text-sm" />
+          </button>
+          <p className="text-gray-400 text-sm">
+            {comment.numberOfLikes > 0 && comment.numberOfLikes + ' ' + (comment.numberOfLikes === 1 ? 'like' : 'likes')}
+          </p>
+        </div>
       </div>
     </div>
   );
 };
-
+ 
 export default Comment;
