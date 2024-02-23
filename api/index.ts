@@ -18,13 +18,14 @@ app.use(express.json());
 app.use(cookieParser());
 
 mongoose
-  .connect(process.env.MONGO_CONNECTION_STRING)
+  .connect(process.env.MONGO_CONNECTION_STRING + '&ssl=true')
   .then(() => {
     console.log("MongoDB database is connected");
   })
   .catch((err) => {
-    console.log(err);
+    console.error("Error connecting to MongoDB:", err);
   });
+
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

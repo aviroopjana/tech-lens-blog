@@ -140,7 +140,6 @@ const DashProfile = () => {
         dispatch(deleteUserFailure(data.message));
       } else {
         dispatch(deleteUserSuccess(data));
-        window.location.href = "/sign-in";
       }
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
@@ -157,7 +156,7 @@ const DashProfile = () => {
         console.log(data.message);
       } else {
         dispatch(signoutSuccess());
-        window.location.href = "/sign-in";
+        // window.location.href = "/sign-in";
       }
     } catch (error) {
       console.log(error.message);
