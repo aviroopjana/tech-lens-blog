@@ -102,6 +102,14 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
     }
   };
 
+  const handleEdit = async (comment: { _id: string; }, editedContent: string) => {
+    setRecievedComments(
+      recievedComments.map((c) =>
+        c._id === comment._id ? { ...c, content: editedContent } : c
+      )
+    );
+  };
+
   return (
     <div className="max-w-3xl p-4 mx-auto w-full">
       {currentUser ? (
@@ -162,7 +170,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
             </p>
           </div>
           {recievedComments.map((comment) => (
-            <Comment key={comment._id} comment={comment} onLike={handleLike} />
+            <Comment key={comment._id} comment={comment} onLike={handleLike} onEdit={handleEdit}/>
           ))}
         </>
       )}
