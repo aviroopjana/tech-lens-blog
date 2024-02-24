@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { signoutSuccess } from "../redux/user/userSlice";
 import { RootState } from "../redux/store";
+import { BiComment } from "react-icons/bi";
 
 const DashSidebar = () => {
   const location = useLocation();
@@ -71,6 +72,17 @@ const DashSidebar = () => {
                 as="div"
               >
                 Users
+              </Sidebar.Item>
+            </Link>
+          )}
+          {currentUser?.isAdmin && (
+            <Link to={"/dashboard?tab=comments"}>
+              <Sidebar.Item
+                active={tab === "comments"}
+                icon={BiComment}
+                as="div"
+              >
+                Comments
               </Sidebar.Item>
             </Link>
           )}
