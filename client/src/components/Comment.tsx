@@ -29,9 +29,10 @@ interface CommentProps {
   comment: CommentType;
   onLike: (id: string) => void;
   onEdit: (comment: CommentType, editedContent: string) => void;
+  onDelete: (id: string) => void; 
 }
 
-const Comment: React.FC<CommentProps> = ({ comment, onLike, onEdit }) => {
+const Comment: React.FC<CommentProps> = ({ comment, onLike, onEdit, onDelete }) => {
   const [user, setUser] = useState<User>();
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState<string>(comment.content);
@@ -158,6 +159,7 @@ const Comment: React.FC<CommentProps> = ({ comment, onLike, onEdit }) => {
                     </button>
                     <button
                       type="button"
+                      onClick={() => onDelete(comment._id)}
                       className="text-gray-400 hover:text-red-500"
                     >
                       Delete
