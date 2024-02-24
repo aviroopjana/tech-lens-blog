@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
+import PostCard from "../components/PostCard";
 
 interface Post {
   _id: string;
@@ -18,11 +19,14 @@ interface Post {
 }
 
 const PostPages = () => {
-  const { postSlug } = useParams();
+  const { postSlug } = useParams<{ postSlug: string }>();
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [post, setPost] = useState<Post>();
+  const [recentPost, setRecentPost] = useState<Post[]>([]);
+
+  console.log(recentPost);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -30,7 +34,7 @@ const PostPages = () => {
         setLoading(true);
         const res = await fetch(`/api/post/getPosts?slug=${postSlug}`);
         const data = await res.json();
-
+        console.log(data);
         if (!res.ok) {
           setError(true);
           setLoading(false);
@@ -46,6 +50,28 @@ const PostPages = () => {
     };
     fetchPost();
   }, [postSlug]);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const res = await fetch(`/api/post/getPosts?limit=3`);
+        const data = await res.json();
+        // console.log(data);
+        if (!res.ok) {
+          setError(true);
+          setLoading(false);
+        } else {
+          setRecentPost(data.posts);
+          setError(false);
+          setLoading(false);
+        }
+      } catch (error) {
+        setError(true);
+        setLoading(false);
+      }
+    };
+    fetchPost();
+  }, []);
 
   if (loading) {
     return (
@@ -84,7 +110,13 @@ const PostPages = () => {
         <CallToAction />
       </div>
       {post && <CommentSection postId={post._id} />}
-
+      <h1 className="mt-5 text-gray-500 dark:text-gray-300 font-serif text-3xl text-center font-medium">Recent Articles</h1>
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-3 mt-3">
+        {recentPost &&
+        recentPost.map((recentpost) => (
+          <PostCard key={recentpost._id} post={recentpost} />
+        ))}
+      </div>
     </main>
   );
 };

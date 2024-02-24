@@ -46,7 +46,6 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
       });
 
       const data = await res.json();
-      console.log(data);
       if (res.ok) {
         setComment("");
         setRecievedComments([data, ...recievedComments]);
