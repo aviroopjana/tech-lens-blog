@@ -5,6 +5,7 @@ import DashSidebar from "../components/DashSidebar";
 import DashPosts from "../components/DashPosts";
 import DashUsers from "../components/DashUsers";
 import DashComments from "../components/DashComments";
+import DashboardComponent from "../components/DashboardComponent";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -23,7 +24,6 @@ const Dashboard = () => {
     <div className="min-h-screen flex flex-col md:flex-row">
       <div className="md:w-56">
         {/*Dashboard Sidebar */}
-
         <DashSidebar />
       </div>
 
@@ -39,6 +39,9 @@ const Dashboard = () => {
 
         {/*Dashboard Comments*/}
         {tab === "comments" && <DashComments/>}
+
+        {/*Dashbooard Component*/}
+        {tab === "dashboard" && <DashboardComponent/>}
 
       </div>
     </div>
