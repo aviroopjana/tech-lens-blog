@@ -13,7 +13,10 @@ dotenv.config();
 const app = express();
 const port = 3000;
 
-app.use(cors());
+app.use(cors({
+  origin: "https://tech-lens.vercel.app"
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 
