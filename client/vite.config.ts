@@ -5,10 +5,7 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   server: {
     proxy: {
-      '/api' : {
-        target: 'https://tech-lens-blog-server.vercel.app',
-        changeOrigin: true
-      },
+      '/api' : 'https://tech-lens-blog-server.vercel.app',
     },
   },
   plugins: [react()],
