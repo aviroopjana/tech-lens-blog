@@ -1,18 +1,38 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import { RootState } from "../redux/store";
-
+import { useEffect, useState } from "react";
 
 const Header = () => {
   const path = useLocation().pathname;
   const dispath = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const { currentUser } = useSelector((state: RootState) => state.user);
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get('searchTerm');
+    if (searchTermFromUrl) {
+      setSearchTerm(searchTermFromUrl);
+    }
+  }, [location.search]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set('searchTerm', searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  };
 
   const navLinks = [
     { path: "/", label: "Home" },
@@ -23,12 +43,14 @@ const Header = () => {
   return (
     <Navbar className="border-b-2">
       <Logo/>
-      <form>
+      <form onSubmit={handleSubmit}>
         <TextInput
           type="text"
           placeholder="Search..."
           rightIcon={AiOutlineSearch}
           className="hidden md:inline"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </form>
 

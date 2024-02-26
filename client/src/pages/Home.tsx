@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { BsFire, BsStars } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import PostCard from "../components/PostCard";
+import CallToAction from "../components/CallToAction";
 
 interface Post {
   _id: string;
@@ -41,12 +42,12 @@ const HomePage = () => {
       {/* first section*/}
       <div className="flex flex-1">
         <img src="animated.png" alt="hola" className="h-[250px]" />
-        <div className="flex flex-col py-12 gap-4">
+        <div className="flex flex-col py-12 gap-4 ml-5">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text">
             TECH LENS
           </h1>
           <p className="text-3xl font-semibold ml-8">See Innovation Unfold ✨</p>
-          <p className="text-lg text-gray-600 dark:text-gray-200 max-w-2xl font-semibold">
+          <p className="text-lg mt-3 text-gray-600 dark:text-gray-200 max-w-2xl font-semibold">
             Welcome to Tech Lens, where we explore the latest in technology and
             innovation. Our resources and articles covers a wide range of
             topics, from industry trends and best practices to in-depth guides.
@@ -55,7 +56,7 @@ const HomePage = () => {
       </div>
 
       {/*Second section */}
-      <div className="flex flex-col lg:flex-row gap-5 mt-10">
+      <div className="flex flex-col lg:flex-row gap-5 mt-8">
         <div className="lg:w-3/5">
           <div className="flex flex-col">
             <div className="flex flex-row gap-2 text-black dark:text-gray-200">
@@ -63,11 +64,14 @@ const HomePage = () => {
               <h1 className="font-semibold text-xl">Spotlight</h1>
             </div>
             <div className="lg:mr-8 flex flex-col gap-2">
+              <Link to={`/post/${spotLight?.slug}`}>
               <img
                 src={spotLight?.image}
                 alt="spotlight"
                 className="rounded-xl object-cover mt-5"
               />
+              </Link>
+              
               <Link
                 to={`/search?category=${spotLight && spotLight.category}`}
                 className="mt-5"
@@ -114,6 +118,11 @@ const HomePage = () => {
         </div>
       </div>
 
+      {/* CallToAction Section */}
+      <div className="max-w-4xl mx-auto w-full my-10">
+        <CallToAction/>
+      </div>
+     
       {/*Third section*/}
       <div className="mt-8 flex flex-col items-center justify-center">
         <h1 className="text-4xl font-semibold bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-transparent bg-clip-text">
