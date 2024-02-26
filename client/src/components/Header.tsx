@@ -1,6 +1,6 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaMoon } from "react-icons/fa";
+import { FaMoon, FaSun } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +15,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const { currentUser } = useSelector((state: RootState) => state.user);
+  const { theme } = useSelector((state: RootState) => state.theme);
 
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -65,7 +66,7 @@ const Header = () => {
           pill
           onClick={() => dispath(toggleTheme())}
         >
-          <FaMoon />
+          {theme === 'dark' ? <FaSun /> : <FaMoon />}
         </Button>
          { currentUser ? (
           <Dropdown
