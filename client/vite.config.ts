@@ -7,7 +7,8 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: "https://tech-lens-blog-server.vercel.app",
-        changeOrigin:true
+        changeOrigin: true,
+        secure: false,
       },
     },
   },
