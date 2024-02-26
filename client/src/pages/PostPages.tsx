@@ -27,6 +27,7 @@ const PostPages = () => {
   const [recentPost, setRecentPost] = useState<Post[]>([]);
 
   console.log(recentPost);
+  console.log(error);
 
   useEffect(() => {
     const fetchPost = async () => {
