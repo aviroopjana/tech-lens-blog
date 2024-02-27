@@ -15,6 +15,9 @@ interface CommentType {
     updatedAt: string;
   }
 
+  const baseUrl = import.meta.env.VITE_BACK_URL;
+
+
 export default function DashComments() {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [comments, setComments] = useState<CommentType[]>([]);
@@ -25,7 +28,7 @@ export default function DashComments() {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const res = await fetch(`/api/comment/getComments`);
+        const res = await fetch(`${baseUrl}/api/comment/getComments`);
         const data = await res.json();
         if (res.ok) {
           setComments(data.comments);
@@ -46,7 +49,7 @@ export default function DashComments() {
     const startIndex = comments.length;
     try {
       const res = await fetch(
-        `/api/comment/getcomments?startIndex=${startIndex}`
+        `${baseUrl}/api/comment/getcomments?startIndex=${startIndex}`
       );
       const data = await res.json();
       if (res.ok) {
@@ -64,7 +67,7 @@ export default function DashComments() {
     setShowModal(false);
     try {
       const res = await fetch(
-        `/api/comment/deleteComment/${commentIdToDelete}`,
+        `${baseUrl}/api/comment/deleteComment/${commentIdToDelete}`,
         {
           method: 'DELETE',
         }

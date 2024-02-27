@@ -56,10 +56,12 @@ const DashboardComponent = () => {
 
   const { currentUser } = useSelector((state: RootState) => state.user);
 
+  const baseUrl = import.meta.env.VITE_BACK_URL;
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch(`/api/user/getusers?limit=5`);
+        const res = await fetch(`${baseUrl}/api/user/getusers?limit=5`);
         const data = await res.json();
         setUsers(data.users);
         setTotalUsers(data.totalUsers);
@@ -70,7 +72,7 @@ const DashboardComponent = () => {
     };
     const fetchComments = async () => {
       try {
-        const res = await fetch(`/api/comment/getComments?limit=5`);
+        const res = await fetch(`${baseUrl}/api/comment/getComments?limit=5`);
         const data = await res.json();
         setComments(data.comments);
         setTotalComments(data.totalComments);
@@ -81,7 +83,7 @@ const DashboardComponent = () => {
     };
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`/api/post/getPosts?limit=5`);
+        const res = await fetch(`${baseUrl}/api/post/getPosts?limit=5`);
         const data = await res.json();
         setPosts(data.posts);
         setTotalPosts(data.totalPosts);

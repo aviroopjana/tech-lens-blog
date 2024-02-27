@@ -31,6 +31,8 @@ interface formDataState {
   _id?: string;
 }
 
+const baseUrl = import.meta.env.VITE_BACK_URL;
+
 const UpdatePost = () => {
   const [file, setFile] = useState<File | null>(null);
   const [imageUploadProgress, setImageUploadProgress] = useState<number | null>(
@@ -57,7 +59,7 @@ const UpdatePost = () => {
   useEffect(() => {
     try {
       const fetchPost = async () => {
-        const res = await fetch(`/api/post/getPosts?postId=${postId}`);
+        const res = await fetch(`${baseUrl}/api/post/getPosts?postId=${postId}`);
         const data = await res.json();
         if (!res.ok) {
           console.log(data.message);
@@ -118,7 +120,7 @@ const UpdatePost = () => {
 
     try {
       const res = await fetch(
-        `/api/post/updatepost/${currentUser?._id}/${formData._id}`,
+        `${baseUrl}/api/post/updatepost/${currentUser?._id}/${formData._id}`,
         {
           method: "PUT",
           headers: {

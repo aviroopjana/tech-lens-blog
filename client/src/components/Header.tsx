@@ -7,10 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import { RootState } from "../redux/store";
 import { useEffect, useState } from "react";
+import { signoutSuccess } from "../redux/user/userSlice";
+
+const baseUrl = import.meta.env.VITE_BACK_URL;
 
 const Header = () => {
   const path = useLocation().pathname;
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -33,6 +36,23 @@ const Header = () => {
     urlParams.set('searchTerm', searchTerm);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
+  };
+
+  const handleSignout = async () => {
+    try {
+      const res = await fetch(`${baseUrl}/api/user/signout`, {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signoutSuccess());
+        window.location.href = "/sign-in";
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const navLinks = [
@@ -64,7 +84,7 @@ const Header = () => {
           className="w-8 md:w-12 h-8 md:h-10 sm:inline hidden "
           color="gray"
           pill
-          onClick={() => dispath(toggleTheme())}
+          onClick={() => dispatch(toggleTheme())}
         >
           {theme === 'dark' ? <FaSun /> : <FaMoon />}
         </Button>
@@ -90,7 +110,9 @@ const Header = () => {
               </Dropdown.Item>
             </Link>              
             <Dropdown.Divider/>
-            <Dropdown.Item>
+            <Dropdown.Item
+              onClick={handleSignout}
+            >
               Sign Out
             </Dropdown.Item>
           </Dropdown>

@@ -14,6 +14,8 @@ interface User {
   createdAt: string;
 }
 
+const baseUrl = import.meta.env.VITE_BACK_URL;
+
 const DashUsers = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
 
@@ -25,7 +27,7 @@ const DashUsers = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`/api/user/getusers`);
+        const res = await fetch(`${baseUrl}/api/user/getusers`);
         const data = await res.json();
         console.log(data);
         if (res.ok) {
@@ -47,7 +49,7 @@ const DashUsers = () => {
   const handleShowMore = async () => {
     const startIndex = users.length;
     try {
-      const res = await fetch(`/api/user/getusers?startIndex=${startIndex}`);
+      const res = await fetch(`${baseUrl}/api/user/getusers?startIndex=${startIndex}`);
       const data = await res.json();
       if (res.ok) {
         setUsers((prev) => [...prev, ...data.users]);
@@ -62,7 +64,7 @@ const DashUsers = () => {
 
   const handleDeleteUser = async () => {
     try {
-      const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
+      const res = await fetch(`${baseUrl}/api/user/delete/${userIdToDelete}`, {
         method: "DELETE",
       });
 

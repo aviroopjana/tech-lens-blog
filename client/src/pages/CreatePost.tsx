@@ -26,6 +26,9 @@ interface formDataState {
   content?: string;
 }
 
+const baseUrl = import.meta.env.VITE_BACK_URL;
+
+
 const CreatePost = () => {
   const editor = useRef(null);
   // const [content, setContent] = useState<string>("");
@@ -82,7 +85,7 @@ const CreatePost = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("api/post/create", {
+      const res = await fetch(`${baseUrl}/api/post/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

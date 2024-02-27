@@ -18,6 +18,8 @@ interface Post {
   __v: number;
 }
 
+const baseUrl = import.meta.env.VITE_BACK_URL;
+
 const PostPages = () => {
   const { postSlug } = useParams<{ postSlug: string }>();
 
@@ -33,7 +35,7 @@ const PostPages = () => {
     const fetchPost = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/post/getPosts?slug=${postSlug}`);
+        const res = await fetch(`${baseUrl}/api/post/getPosts?slug=${postSlug}`);
         const data = await res.json();
         console.log(data);
         if (!res.ok) {
@@ -55,7 +57,7 @@ const PostPages = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const res = await fetch(`/api/post/getPosts?limit=3`);
+        const res = await fetch(`${baseUrl}/api/post/getPosts?limit=3`);
         const data = await res.json();
         // console.log(data);
         if (!res.ok) {

@@ -13,6 +13,8 @@ import { signoutSuccess } from "../redux/user/userSlice";
 import { RootState } from "../redux/store";
 import { BiComment } from "react-icons/bi";
 
+const baseUrl = import.meta.env.VITE_BACK_URL;
+
 const DashSidebar = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -31,7 +33,7 @@ const DashSidebar = () => {
 
   const handleSignout = async () => {
     try {
-      const res = await fetch(`/api/user/signout`, {
+      const res = await fetch(`${baseUrl}/api/user/signout`, {
         method: "POST",
       });
       const data = await res.json();

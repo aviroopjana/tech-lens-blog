@@ -5,6 +5,8 @@ import { SiGooglelens } from "react-icons/si";
 import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
 
+const baseUrl = import.meta.env.VITE_BACK_URL;
+
 export default function SignUp() {
   const [formData, setFormData] = useState<{ [key: string]: string }>({});
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -27,7 +29,7 @@ export default function SignUp() {
       setLoading(true);
       setErrorMessage("");
 
-      const res = await fetch("/api/auth/signup", {
+      const res = await fetch(`${baseUrl}/api/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

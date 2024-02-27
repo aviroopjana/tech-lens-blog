@@ -32,6 +32,8 @@ interface CommentProps {
   onDelete: (id: string) => void; 
 }
 
+const baseUrl = import.meta.env.VITE_BACK_URL;
+
 const Comment: React.FC<CommentProps> = ({ comment, onLike, onEdit, onDelete }) => {
   const [user, setUser] = useState<User>();
   const [isEditing, setIsEditing] = useState(false);
@@ -42,7 +44,7 @@ const Comment: React.FC<CommentProps> = ({ comment, onLike, onEdit, onDelete }) 
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`/api/user/${comment.userId}`);
+        const res = await fetch(`${baseUrl}/api/user/${comment.userId}`);
         const data = await res.json();
         if (res.ok) {
           setUser(data);
@@ -61,7 +63,7 @@ const Comment: React.FC<CommentProps> = ({ comment, onLike, onEdit, onDelete }) 
 
   const handleSave = async () => {
     try {
-      const res = await fetch(`/api/comment/editComment/${comment._id}`, {
+      const res = await fetch(`${baseUrl}/api/comment/editComment/${comment._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

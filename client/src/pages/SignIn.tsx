@@ -13,6 +13,8 @@ interface FormData {
   password: string;
 }
 
+const baseUrl = import.meta.env.VITE_BACK_URL;
+
 export default function SignIn() {
   const [formData, setFormData] = useState<FormData>({ email: "", password: "" });
   const { loading, error: errorMessage } = useSelector((state: RootState) => state.user);
@@ -32,7 +34,7 @@ export default function SignIn() {
 
     try {
       dispatch(signInStart());
-      const res = await fetch("/api/auth/signin", {
+      const res = await fetch(`${baseUrl}/api/auth/signin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

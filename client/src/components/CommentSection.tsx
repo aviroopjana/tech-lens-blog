@@ -20,6 +20,8 @@ interface CommentSectionProps {
   postId?: string;
 }
 
+const baseUrl = import.meta.env.VITE_BACK_URL;
+
 const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
   const { currentUser } = useSelector((state: RootState) => state.user);
 
@@ -33,7 +35,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/comment/create", {
+      const res = await fetch(`${baseUrl}/api/comment/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +63,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
         if (!postId) {
           console.log("postId is missing!");
         }
-        const res = await fetch(`/api/comment/getPostComments/${postId}`);
+        const res = await fetch(`${baseUrl}/api/comment/getPostComments/${postId}`);
         const data = await res.json();
         setRecievedComments(data);
       } catch (error) {
@@ -79,7 +81,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
         return;
       }
 
-      const res = await fetch(`/api/comment/likeComment/${commentId}`, {
+      const res = await fetch(`${baseUrl}/api/comment/likeComment/${commentId}`, {
         method: "PUT",
       });
 
@@ -119,7 +121,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
         navigate('/sign-in');
         return;
       }
-      const res = await fetch(`/api/comment/deleteComment/${commentId}`, {
+      const res = await fetch(`${baseUrl}/api/comment/deleteComment/${commentId}`, {
         method: 'DELETE',
       });
       if (res.ok) {

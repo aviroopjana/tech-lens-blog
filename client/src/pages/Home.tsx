@@ -19,6 +19,8 @@ interface Post {
   __v: number;
 }
 
+const baseUrl = import.meta.env.VITE_BACK_URL;
+
 const HomePage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [spotLight, setSpotLight] = useState<Post>();
@@ -26,8 +28,9 @@ const HomePage = () => {
   useEffect(() => {
     const getAllPosts = async () => {
       try {
-        const res = await fetch(`/api/post/getPosts`);
+        const res = await fetch(`${baseUrl}/api/post/getPosts`);
         const data = await res.json();
+        console.log(baseUrl);
         setPosts(data.posts);
         setSpotLight(data.posts[2]);
       } catch (error) {
@@ -40,9 +43,9 @@ const HomePage = () => {
   return (
     <div className="max-w-6xl mx-auto p-3 mt-5">
       {/* first section*/}
-      <div className="flex flex-1">
-        <img src="animated.png" alt="hola" className="h-[250px]" />
-        <div className="flex flex-col py-12 gap-4 ml-5">
+      <div className="flex flex-col md:flex-row">
+        <img src="animated.png" alt="hola" className="md:w-1/2 md:h-auto lg:h-[250px] lg:w-1/3" />
+        <div className="flex flex-col py-12 gap-4 md:w-1/2 md:ml-5">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text">
             TECH LENS
           </h1>
@@ -56,19 +59,19 @@ const HomePage = () => {
       </div>
 
       {/*Second section */}
-      <div className="flex flex-col lg:flex-row gap-5 mt-8">
-        <div className="lg:w-3/5">
+      <div className="flex flex-col md:flex-row gap-5 mt-8">
+        <div className="md:w-3/5">
           <div className="flex flex-col">
             <div className="flex flex-row gap-2 text-black dark:text-gray-200">
               <BsStars size={30} />
               <h1 className="font-semibold text-xl">Spotlight</h1>
             </div>
-            <div className="lg:mr-8 flex flex-col gap-2">
+            <div className="md:mr-8 flex flex-col gap-2">
               <Link to={`/post/${spotLight?.slug}`}>
               <img
                 src={spotLight?.image}
                 alt="spotlight"
-                className="rounded-xl object-cover mt-5"
+                className="rounded-xl object-cover mt-5 w-full"
               />
               </Link>
               
@@ -87,7 +90,7 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-        <div className="lg:w-2/5 px-5 flex flex-col items-center">
+        <div className="md:w-2/5 px-5 flex flex-col items-center">
           <div className="flex flex-row gap-4 self-center">
             <BsFire size={30} />
             <p className="font-semibold text-xl">Trending Categories</p>

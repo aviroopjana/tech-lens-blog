@@ -23,6 +23,8 @@ import {
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
+const baseUrl = import.meta.env.VITE_BACK_URL;
+
 const DashProfile = () => {
   const { currentUser, error, loading }: RootState['user'] = useSelector(
     (state: RootState) => state.user
@@ -75,7 +77,7 @@ const DashProfile = () => {
     }
     try {
       dispatch(updateStart());
-      const res = await fetch(`/api/user/update/${currentUser?._id}`, {
+      const res = await fetch(`${baseUrl}/api/user/update/${currentUser?._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -131,7 +133,7 @@ const DashProfile = () => {
     setShowModal(false);
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`/api/user/delete/${currentUser?._id}`, {
+      const res = await fetch(`${baseUrl}/api/user/delete/${currentUser?._id}`, {
         method: "DELETE",
       });
       const data = await res.json();
@@ -148,7 +150,7 @@ const DashProfile = () => {
 
   const handleSignout = async () => {
     try {
-      const res = await fetch(`/api/user/signout`, {
+      const res = await fetch(`${baseUrl}/api/user/signout`, {
         method: "POST",
       });
       const data = await res.json();

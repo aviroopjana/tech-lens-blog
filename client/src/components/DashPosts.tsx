@@ -18,6 +18,8 @@ interface Post {
   __v: number;
 }
 
+const baseUrl = import.meta.env.VITE_BACK_URL;
+
 const DashPosts = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
 
@@ -30,7 +32,7 @@ const DashPosts = () => {
     const fetchPosts = async () => {
       try {
         const res = await fetch(
-          `/api/post/getPosts?userId=${currentUser?._id}`
+          `${baseUrl}/api/post/getPosts?userId=${currentUser?._id}`
         );
         const data = await res.json();
         console.log(data);
@@ -54,7 +56,7 @@ const DashPosts = () => {
     const startIndex = userPosts.length;
     try {
       const res = await fetch(
-        `/api/post/getPosts?userId=${currentUser?._id}&startIndex=${startIndex}`
+        `${baseUrl}/api/post/getPosts?userId=${currentUser?._id}&startIndex=${startIndex}`
       );
       const data = await res.json();
       if (res.ok) {
@@ -72,7 +74,7 @@ const DashPosts = () => {
     setShowModal(false);
     try {
       const res = await fetch(
-        `/api/post/deleteposts/${currentUser?._id}/${postIdToDelete}`,
+        `${baseUrl}/api/post/deleteposts/${currentUser?._id}/${postIdToDelete}`,
         {
           method: "DELETE",
         }
