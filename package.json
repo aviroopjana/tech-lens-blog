@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon api/index.ts",
     "start": "node api/index.ts",
-    "build": "npm install && npm install --prefix client && npm run build --prefix client"
+    "build": "ts-node && npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.5",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
 }
