@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon api/index.ts",
     "start": "node api/index.ts",
-    "build": "ts-node && npm install --prefix client && npm run build --prefix client"
+    "build": "tsc && npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [],
   "author": "",
