@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 import express from "express";
-import dotenv from "dotenv";
+const dotenv = require("dotenv");
 import cors from "cors";
 import testRoute from "./routes/user.route";
 import authRoute from "./routes/auth.route";
 import postRoutes from "./routes/post.route";
 import commentRoutes from "./routes/comment.route";
 import cookieParser from 'cookie-parser';
-import path from 'path';
+import * as path from 'path';
 
 dotenv.config();
 
