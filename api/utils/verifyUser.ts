@@ -4,6 +4,10 @@ import { ErrorHandler } from "./error";
 export const verifyToken = (req, res, next) => {
     const token = req.cookies.access_token;
 
+    console.log("Request Headers:", req.headers);
+
+    console.log(req.cookies.access_token);
+
     if (!token) {
         return next(ErrorHandler(400, "Unauthorized"));
     }
